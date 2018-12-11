@@ -6,4 +6,5 @@ Initially commited using python 3+ and openCV 3+ environment.
 
 ### installing dependencies
 pip install --upgrade pip
+
 pip install imutils
