@@ -11,3 +11,6 @@ pip install imutils
 
 https://pypi.org/project/opencv-python/
 pip install opencv-python
+
+### Example running program
+python pythonScriptName.py --image imageName.jpg
