@@ -57,10 +57,10 @@ for c in cnts:
 
 # resize the output window
 cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
-#cv2.namedWindow("Thresh", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Thresh", cv2.WINDOW_NORMAL)
 #cv2.resizeWindow("Image", 600,600)
 
 # show the image
 cv2.imshow("Image", image)
-#cv2.imshow("Thresh", thresh)
+cv2.imshow("Thresh", thresh)
 cv2.waitKey(0)
