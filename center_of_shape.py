@@ -17,16 +17,19 @@ imsize = im.size
 print(imsize)
 imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
 imgray = cv2.blur(imgray,(15,15))
-ret,thresh = cv2.threshold(imgray,math.floor(numpy.average(imgray)),255,cv2.THRESH_BINARY_INV)
+#ret,thresh = cv2.threshold(imgray,math.floor(numpy.average(imgray)),255,cv2.THRESH_BINARY_INV)
+ret,thresh = cv2.threshold(imgray,60,255,cv2.THRESH_BINARY_INV)
 dilated=cv2.morphologyEx(thresh, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(10,10)))
-_,contours,_ = cv2.findContours(dilated,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+_,contours,_ = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 
 new_contours=[]
 for c in contours:
-    if cv2.contourArea(c) > 500:
-      if cv2.contourArea(c) < 5000:
+    if cv2.contourArea(c) > 0:
+      if cv2.contourArea(c) < 1009800:
         new_contours.append(c)
-        
+
+print(len(contours))
+print(len(new_contours))
 best_box=[-1,-1,-1,-1]
 for c in new_contours:
   x,y,w,h = cv2.boundingRect(c)
@@ -41,7 +44,7 @@ for c in new_contours:
       best_box[2]=x+w
     if y+h>best_box[3]:
       best_box[3]=y+h
-  cv2.rectangle(dilated, (best_box[0],best_box[1]), (best_box[2],best_box[3]), (255, 255, 0), 2)
+  cv2.rectangle(im, (best_box[0],best_box[1]), (best_box[2],best_box[3]), (255, 255, 0), 2)
 
 #print(len(cnts))
 

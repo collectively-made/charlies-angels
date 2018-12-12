@@ -21,19 +21,46 @@ cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
 	cv2.CHAIN_APPROX_SIMPLE)
 cnts = imutils.grab_contours(cnts)
 
+
+# try to find the right size bounding boxes and draw them
+new_cnts=[]
+for c in cnts:
+    if cv2.contourArea(c) > 0:
+      if cv2.contourArea(c) < 1009800:
+        new_cnts.append(c)
+
+best_box=[-1,-1,-1,-1]
+for c in new_cnts:
+  x,y,w,h = cv2.boundingRect(c)
+  if best_box[0] < 0:
+    best_box=[x,y,x+w,y+h]
+  else:
+    if x<best_box[0]:
+      best_box[0]=x
+    if y<best_box[1]:
+      best_box[1]=y
+    if x+w>best_box[2]:
+      best_box[2]=x+w
+    if y+h>best_box[3]:
+      best_box[3]=y+h
+  cv2.rectangle(thresh, (best_box[0],best_box[1]), (best_box[2],best_box[3]), (255, 255, 0), 2)
+
+print(len(cnts))
+print(len(new_cnts))
+
 # loop over the contours
 for c in cnts:
-	# compute the center of the contour
-	M = cv2.moments(c)
-	cX = int(M["m10"] / M["m00"])
-	cY = int(M["m01"] / M["m00"])
  
-	# draw the contour and center of the shape on the image
-	cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
-	cv2.circle(image, (cX, cY), 7, (255, 255, 255), -1)
-	cv2.putText(image, "center", (cX - 20, cY - 20),
-		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
- 
-	# show the image
-	cv2.imshow("Image", image)
-	cv2.waitKey(0)
+	 # draw the contour and center of the shape on the image
+  cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+
+
+# resize the output window
+cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Thresh", cv2.WINDOW_NORMAL)
+#cv2.resizeWindow("Image", 600,600)
+
+# show the image
+cv2.imshow("Image", image)
+cv2.imshow("Thresh", thresh)
+cv2.waitKey(0)
