@@ -43,7 +43,7 @@ for c in new_cnts:
       best_box[2]=x+w
     if y+h>best_box[3]:
       best_box[3]=y+h
-  cv2.rectangle(thresh, (x,y), (x+w, y+h), (255, 255, 0), 2)
+  cv2.rectangle(image, (x,y), (x+w, y+h), (255, 255, 0), 2)
 
 print(len(cnts))
 print(len(new_cnts))
